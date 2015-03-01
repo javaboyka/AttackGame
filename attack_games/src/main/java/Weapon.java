@@ -3,7 +3,7 @@
  */
 public class Weapon {
 
-    String weapon_name;
+    String weapon_name = "";
 
     float weapon_attack_value = 0.0f;
 
@@ -11,9 +11,9 @@ public class Weapon {
 
     int weapon_type;
 
-    String weapon_effect;
+    String weapon_effect = "";
 
-    boolean is_delayed_hurt;
+    boolean is_delayed_hurt = false;
 
     int trigger_probability;
 

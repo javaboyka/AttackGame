@@ -1,12 +1,7 @@
 import org.junit.Test;
 
+import static org.fest.assertions.Assertions.assertThat;
 
-//import static org.fest.assertions.api.Assertions.assertThat;
-
-
-/**
- * Created by zzy on 2/11/15.
- */
 public class AttackTest {
 
     @Test
@@ -23,7 +18,7 @@ public class AttackTest {
 
         Attack attack = new Attack();
 
-//        assertThat(attack.attack(player1, player2).health_point).isEqualTo(90);
+        assertThat(attack.attack_player(player1, player2).health_point).isEqualTo(90);
     }
 
     @Test

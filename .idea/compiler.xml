@@ -23,7 +23,9 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
-        <module name="AttackGame" />
+        <module name="attack" />
+        <module name="attack-game" />
+        <module name="attack_games" />
       </profile>
     </annotationProcessing>
   </component>
