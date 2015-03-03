@@ -18,11 +18,13 @@ public class GameMain {
         player3.user_name = "张三";
         player3.profession = "战士";
         Weapon weapon = new Weapon();
-        weapon.weapon_name = "优质毒剑";
+//        weapon.weapon_name = "寒冰剑";
+//        weapon.weapon_name = "晕锤";
         weapon.weapon_attack_value = 2.0f;
         weapon.weapon_effect_value = 2.0f;
-        weapon.weapon_effect = "毒性伤害";
-        weapon.weapon_type = 1;
+//        weapon.weapon_effect = "冰冻";
+//        weapon.weapon_effect = "眩晕";
+        weapon.weapon_type = 5;
         weapon.continue_number = 3;
         player3.weapon = weapon;
         player3.armor_name = "铠甲";

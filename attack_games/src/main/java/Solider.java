@@ -11,7 +11,10 @@ public class Solider extends Player {
 	public float armor_value = 0.0f;
 
     public Solider attack_solider(Solider user1, Solider user2) {
-        user2.health_point = user2.health_point + user2.armor_value - user1.attack_value - user1.weapon.weapon_attack_value;
+        if(user1.notAttack){
+         return user2;
+        }
+
         StringBuffer out_info = new StringBuffer();
         out_info.append(user1.profession + user1.user_name);
         if (!"".equals(user1.weapon.weapon_name)) {
@@ -20,8 +23,11 @@ public class Solider extends Player {
         out_info.append("攻击了");
         out_info.append(user2.profession + user2.user_name + ", ");
 
-        out_info.append(user2.user_name + "受到了");
-        out_info.append((user1.attack_value + user1.weapon.weapon_attack_value - user2.armor_value) + "点伤害, ");
+        if(user1.weapon.weapon_type != 5){
+            user2.health_point = user2.health_point + user2.armor_value - user1.attack_value - user1.weapon.weapon_attack_value;
+            out_info.append(user2.user_name + "受到了");
+            out_info.append((user1.attack_value + user1.weapon.weapon_attack_value - user2.armor_value) + "点伤害, ");
+        }
 
         String attack_result = "";
         String attack_effect = "";
@@ -29,26 +35,41 @@ public class Solider extends Player {
             user1.weapon.continue_number--;
             float after_attack_health_point = user2.health_point;
             if(user1.weapon.weapon_type == 1){//venom
-                attack_result = "中毒了";
+                attack_result = user2.user_name + "中毒了";
                 after_attack_health_point = user2.health_point - user1.weapon.weapon_effect_value;
                 attack_effect = user2.user_name + "受到了" + user1.weapon.weapon_effect_value + "点毒性伤害, "
                         + user2.user_name +"剩余生命：" + after_attack_health_point;
             }else if(user1.weapon.weapon_type == 2){//fire
-                attack_result = "着火了";
+                attack_result = user2.user_name + "着火了";
                 after_attack_health_point = user2.health_point - user1.weapon.weapon_effect_value;
                 attack_effect = user2.user_name + "受到了" + user1.weapon.weapon_effect_value + "点火焰伤害, "
                         + user2.user_name +"剩余生命：" + after_attack_health_point;
             }else if(user1.weapon.weapon_type == 3){//ice
-                attack_result = "冻僵了";
-                attack_effect = user2.user_name + "冻的直哆嗦，没有击中"+user1.user_name;
+                attack_result = user2.user_name + "冻僵了";
+                user2.times++;
+                if(user2.times % 2 == 0){
+                    attack_effect = user2.user_name + "冻的直哆嗦，没有击中"+user1.user_name ;
+                    user2.notAttack = true;
+                }else{
+                    user2.notAttack = false;
+                }
             }else if(user1.weapon.weapon_type == 4){//faint
-                attack_result = "晕倒了";
+                attack_result = user2.user_name + "晕倒了";
                 attack_effect = user2.user_name + "晕倒了，无法攻击，" + "眩晕还剩" +user1.weapon.continue_number + "轮";
+                user2.notAttack = true;
+            }else if(user1.weapon.weapon_type == 5){//faint
+                user2.health_point = user2.health_point + user2.armor_value - (user1.attack_value + user1.weapon.weapon_attack_value) * 3;
+                attack_result = user1.user_name + "发动了全力一击," + user2.user_name + "受到了" + ((user1.attack_value + user1.weapon.weapon_attack_value) * 3) +"点伤害";
+            }
+        }else{
+            if(user1.weapon.weapon_type == 3
+                    || user1.weapon.weapon_type == 4){//faint
+                user2.notAttack = false;
             }
         }
 
         if(!"".equals(attack_result)){
-            out_info.append(user2.user_name + attack_result).append(",");
+            out_info.append(attack_result).append(",");
         }
 
         out_info.append(user2.user_name + "剩余生命：" + user2.health_point);
@@ -72,6 +93,9 @@ public class Solider extends Player {
     }
 
     public Player attack_player(Solider user1, Player user2) {
+        if(user1.notAttack){
+            return user2;
+        }
         user2.health_point = user2.health_point - user1.attack_value - user1.weapon.weapon_attack_value;
         StringBuffer out_info = new StringBuffer();
         out_info.append(user1.profession + user1.user_name);
@@ -90,18 +114,30 @@ public class Solider extends Player {
             attack_result = "中毒了";
             user2.health_point = user2.health_point - user1.weapon.weapon_effect_value;
             attack_effect = user2.user_name + "受到了" + user1.weapon.weapon_effect_value + "点毒性伤害, "
-                    + user2.user_name +"剩余生命：" + user2.health_point+"\n";
+                    + user2.user_name +"剩余生命：" + user2.health_point;
         }else if(user1.weapon.weapon_type == 2){//fire
             attack_result = "着火了";
             user2.health_point = user2.health_point - user1.weapon.weapon_effect_value;
             attack_effect = user2.user_name + "受到了" + user1.weapon.weapon_effect_value + "点火焰伤害, "
-                    + user2.user_name +"剩余生命：" + user2.health_point+"\n";
+                    + user2.user_name +"剩余生命：" + user2.health_point;
         }else if(user1.weapon.weapon_type == 3){//ice
             attack_result = "冻僵了";
-            attack_effect = user2.user_name + "冻的直哆嗦，没有击中"+user1.user_name + "\n";
+            user2.times++;
+            if(user2.times % 2 == 0){
+                attack_effect = user2.user_name + "冻的直哆嗦，没有击中"+user1.user_name ;
+                user2.notAttack = true;
+            }else{
+                user2.notAttack = false;
+            }
         }else if(user1.weapon.weapon_type == 4){//faint
             attack_result = "晕倒了";
             attack_effect = user2.user_name + "晕倒了，无法攻击，" + "眩晕还剩" +user1.weapon.continue_number + "轮\n";
+            user2.notAttack = true;
+        }else{
+            if(user1.weapon.weapon_type == 3
+                    || user1.weapon.weapon_type == 4){//faint
+                user2.notAttack = false;
+            }
         }
 
         if(!"".equals(attack_result)){

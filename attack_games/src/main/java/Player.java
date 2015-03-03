@@ -13,6 +13,10 @@ public class Player {
     
     public String profession = "普通人";
 
+    protected boolean notAttack = false;
+
+    protected int times;
+
     public Player attack_player(Player user1, Player user2) {
         user2.health_point = user2.health_point - user1.attack_value;
         System.out.println(user1.user_name + "攻击了" + user2.user_name
